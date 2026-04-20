@@ -1,0 +1,377 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>介绍图项目展示</title>
+  <style>
+    :root {
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      color: #111827;
+      background: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .sub {
+      margin: 0 0 16px;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    .desc-box {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: #f9fafb;
+      padding: 12px;
+      margin-bottom: 14px;
+      line-height: 1.7;
+      color: #1f2937;
+      white-space: pre-wrap;
+    }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .project-btn {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #111827;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+    }
+
+    .project-btn:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+
+    .project-btn.active {
+      border-color: #2563eb;
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .preview {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 14px;
+      min-height: 150px;
+    }
+
+    .empty-tip {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .preview-title {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .image-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      background: #f3f4f6;
+      cursor: zoom-in;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .lightbox.show {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(100%, 1100px);
+      max-height: 92vh;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border: 1px solid #9ca3af;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.78);
+      color: #fff;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-prev {
+      left: 12px;
+    }
+
+    .lightbox-next {
+      right: 12px;
+    }
+
+    .lightbox-counter {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      background: rgba(17, 24, 39, 0.75);
+      border: 1px solid #6b7280;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      border: 1px solid #6b7280;
+      background: rgba(31, 41, 55, 0.85);
+      color: #fff;
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .image-card img {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>介绍图展示</h1>
+    <p class="sub">点击下方按钮后，展示全部图片。</p>
+    <!-- <div class="desc-box" id="descBox">高端私密会所（示例文案）
+请将此处替换为你的合规介绍内容。</div> -->
+
+    <div class="project-list">
+      <button id="previewBtn" class="project-btn" type="button">点击项目预览（显示全部图片）</button>
+    </div>
+
+    <div class="preview" id="previewArea">
+      <p class="empty-tip">请点击“点击项目预览”按钮查看全部图片。</p>
+    </div>
+  </div>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button id="lightboxPrev" class="lightbox-nav lightbox-prev" type="button" aria-label="上一张">‹</button>
+    <button id="lightboxNext" class="lightbox-nav lightbox-next" type="button" aria-label="下一张">›</button>
+    <button id="lightboxClose" class="lightbox-close" type="button">关闭预览</button>
+    <img id="lightboxImage" src="" alt="图片预览" />
+    <div id="lightboxCounter" class="lightbox-counter">1 / 1</div>
+  </div>
+
+  <script>
+    const allImages = [
+      "image/1.jpg",
+      "image/2.jpg",
+      "image/3.png",
+      "image/4.jpg",
+      "image/5.jpg",
+      "image/6.jpg"
+    ];
+
+    const previewBtnEl = document.getElementById("previewBtn");
+    const previewAreaEl = document.getElementById("previewArea");
+    let isShown = false;
+    let currentIndex = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function renderEmptyTip(text) {
+      previewAreaEl.innerHTML = '<p class="empty-tip">' + text + "</p>";
+    }
+
+    function renderPreview() {
+      const imagesHtml = allImages
+        .map((imgPath) => {
+          return (
+            '<div class="image-card">' +
+              '<img src="' + imgPath + '" alt="预览图片" loading="lazy" data-src="' + imgPath + '" />' +
+            "</div>"
+          );
+        })
+        .join("");
+
+      previewAreaEl.innerHTML =
+        '<h2 class="preview-title">全部图片（' + allImages.length + " 张）</h2>" +
+        '<div class="gallery">' + imagesHtml + "</div>";
+
+      const imgs = previewAreaEl.querySelectorAll("img[data-src]");
+      imgs.forEach((img) => {
+        img.addEventListener("click", () => {
+          const clickedSrc = img.dataset.src;
+          const idx = allImages.findIndex((src) => src === clickedSrc);
+          openLightbox(idx >= 0 ? idx : 0);
+        });
+      });
+    }
+
+    const lightboxEl = document.getElementById("lightbox");
+    const lightboxImageEl = document.getElementById("lightboxImage");
+    const lightboxCloseEl = document.getElementById("lightboxClose");
+    const lightboxPrevEl = document.getElementById("lightboxPrev");
+    const lightboxNextEl = document.getElementById("lightboxNext");
+    const lightboxCounterEl = document.getElementById("lightboxCounter");
+
+    function updateLightboxImage() {
+      if (!allImages.length) return;
+      lightboxImageEl.src = allImages[currentIndex];
+      lightboxCounterEl.textContent = (currentIndex + 1) + " / " + allImages.length;
+    }
+
+    function openLightbox(startIndex) {
+      currentIndex = startIndex;
+      updateLightboxImage();
+      lightboxEl.classList.add("show");
+      lightboxEl.setAttribute("aria-hidden", "false");
+    }
+
+    function showPrevImage() {
+      if (!allImages.length) return;
+      currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+      updateLightboxImage();
+    }
+
+    function showNextImage() {
+      if (!allImages.length) return;
+      currentIndex = (currentIndex + 1) % allImages.length;
+      updateLightboxImage();
+    }
+
+    function closeLightbox() {
+      lightboxEl.classList.remove("show");
+      lightboxEl.setAttribute("aria-hidden", "true");
+      lightboxImageEl.src = "";
+    }
+
+    lightboxCloseEl.addEventListener("click", closeLightbox);
+    lightboxPrevEl.addEventListener("click", showPrevImage);
+    lightboxNextEl.addEventListener("click", showNextImage);
+    lightboxEl.addEventListener("click", (event) => {
+      if (event.target === lightboxEl) closeLightbox();
+    });
+    lightboxEl.addEventListener("touchstart", (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    lightboxEl.addEventListener("touchend", (event) => {
+      touchEndX = event.changedTouches[0].clientX;
+      const delta = touchEndX - touchStartX;
+      if (Math.abs(delta) < 40) return;
+      if (delta > 0) showPrevImage();
+      else showNextImage();
+    }, { passive: true });
+    document.addEventListener("keydown", (event) => {
+      if (!lightboxEl.classList.contains("show")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") showPrevImage();
+      if (event.key === "ArrowRight") showNextImage();
+    });
+
+    // 基础防护：仅减少普通下载操作，无法彻底阻止截图或保存
+    document.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    });
+    document.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+    document.addEventListener("keydown", (event) => {
+      const key = event.key.toLowerCase();
+      const ctrlOrMeta = event.ctrlKey || event.metaKey;
+      if (ctrlOrMeta && (key === "s" || key === "p" || key === "u")) {
+        event.preventDefault();
+      }
+      if (event.key === "F12") {
+        event.preventDefault();
+      }
+    });
+    previewBtnEl.addEventListener("click", () => {
+      if (!allImages.length) {
+        renderEmptyTip("image 文件夹中未配置可展示图片。");
+        return;
+      }
+
+      if (isShown) {
+        isShown = false;
+        previewBtnEl.classList.remove("active");
+        renderEmptyTip("已收起展示。请点击按钮再次查看全部图片。");
+        return;
+      }
+
+      isShown = true;
+      previewBtnEl.classList.add("active");
+      renderPreview();
+    });
+  </script>
+</body>
+</html>
